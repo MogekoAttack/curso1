@@ -3,13 +3,19 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django import forms
 
 from .models import User
 
+class NewListing(forms.Form):
+    title = forms.CharField()
+    description = forms.CharField(widget=forms.Textarea())
+    bid = forms.IntegerField()
+    image_url = forms.CharField(required=False)
+    category = forms.CharField(required=False)
 
 def index(request):
     return render(request, "auctions/index.html")
-
 
 def login_view(request):
     if request.method == "POST":
@@ -61,3 +67,9 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+def new_listing_page(request):
+    form = NewListing(request.POST)
+    return render(request, "auctions/new_listing.html",{
+        "form": NewListing(),
+    })
