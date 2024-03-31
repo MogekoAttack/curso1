@@ -2,9 +2,9 @@
 
 {% block body %}
     <h2>New listing</h2>
-    <form action="" method="post">
+    <form method="post">
         {% csrf_token %}
-        {{ form }}
-        <button>Create</button>
+        {{ form.as_p }}
+        <button type="submit">Crear Listado</button>
     </form>
 {% endblock %}

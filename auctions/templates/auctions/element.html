@@ -1,0 +1,12 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div style="display: flex; flex-direction: column;">
+        <h2>Listing: {{ title }}</h2>
+        <img src="{{ image }}" alt="Image not exist" width="70%" style="align-self: center;">
+        <p>Description: {{ text }}</p>
+        <h3>$ {{ bid }}</h3>
+        <p></p>
+        <h3 style="align-self: center;">Category: {{ category }}</h3>
+    </div>
+{% endblock %}
