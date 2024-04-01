@@ -5,20 +5,27 @@
         <h2>Listing: {{ title }}</h2>
         <img src="{{ image }}" alt="Image not exist" width="70%" style="align-self: center;">
         <p>Description: {{ text }}</p>
-        <h3>$ {{ bid }}</h3>
+        <h3>Initial bid: $ {{ bid }}</h3>
+        {% if best_bid %}
+            <h3>Best bid: $ {{ best_bid.bid }} for: {{ best_bid.author }}</h3>
+        {% endif %}
         {% if user.is_authenticated %}
-            <form method="post">
-                {% csrf_token %}
-                {{ form }}
-                <button type="submit">New biding</button>
-                {% if messages %}
-                    <ul class="messages" style="background-color: red; color: white; font-weight: bolder; display: flex; justify-content: center;">
-                        {% for message in messages %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </form>
+            {% if dato.open %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit">New biding</button>
+                    {% if messages %}
+                        <ul class="messages" style="background-color: red; color: white; font-weight: bolder; display: flex; justify-content: center;">
+                            {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </form>
+            {% else %}
+                <h1>WINNER: {{ best_bid.author }}</h1>
+            {% endif %}
             {% if follow %}
                 <a href="/follow/{{ dato.id }}">
                     <button>Remove from follow list</button>
@@ -28,9 +35,36 @@
                     <button>Add follow list</button>
                 </a>
             {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <p>Add commentary</p>
+                {{ comentario.text }}
+                <button>Add</button>
+            </form>
+
         {% else %}
             Not signed in.
         {% endif %}
+        <div >
+            {% for c in listacomentarios %}
+                <div style="border-style: solid; margin: 20px;">
+                    <p>Auhor: {{ c.author }}</p>
+                    <p>Comentary: {{ c.text }}</p>
+                </div>
+            {% endfor %}
+        </div>
         <h3 style="align-self: center;">Category: {{ category }}</h3>
+        <h3 style="align-self: center;">Author: {{ dato.author }}</h3>
+        {% if creator %}
+            <a href="/delete/{{ dato.id }}">
+                <button>Delete this!</button>
+            </a>
+            {% if dato.open %}
+                <a href="/close/{{ dato.id }}">
+                    <button>Close this!</button>
+                </a>
+            {% endif %}
+            
+        {% endif %}
     </div>
 {% endblock %}

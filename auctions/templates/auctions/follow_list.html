@@ -1,0 +1,15 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Follow list</h2>
+    {% for dato in list %}
+        <a href="/element/{{ dato.id }}" style="text-decoration: none; color: inherit;">
+            <div style="margin: 20px; display: flex; flex-direction: column; border-style: solid; border-color: gray;">
+                <p>Title: {{ dato.title }}</p>
+                <p>Description: {{ dato.text }}</p>
+                <p>Starting bid: {{ dato.starting_bid }}</p>
+                <img src="{{ dato.image_url }}" alt="Image not exist" width="30%" style="align-self: center;">
+            </div>
+        </a>
+    {% endfor %}
+{% endblock %}

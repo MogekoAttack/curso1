@@ -29,14 +29,45 @@ class Subasta(models.Model):
     category = models.CharField(
         max_length = 64,
     )
+    author = models.ForeignKey(
+        User,
+        on_delete = models.CASCADE,
+    )
+    open = models.BooleanField(
+        default = True,
+    )
 
     
 class Oferta(models.Model):
     text = models.CharField(
         max_length = 64,
+        default="none",
+        null=True,
+    )
+    subasta = models.ForeignKey(
+        Subasta,
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    bid = models.IntegerField(
+        null=True,
     )
 
+
 class Comentario(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
     text = models.CharField(
         max_length = 64,
+    )
+    subasta = models.ForeignKey(
+        Subasta,
+        on_delete=models.CASCADE,
     )

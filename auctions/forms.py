@@ -24,3 +24,9 @@ class NewListing(forms.Form):
 
 class NewBiding(forms.Form):
     new = forms.IntegerField()
+
+class Comentary(forms.Form):
+    text = forms.CharField(
+        max_length=2048,
+        label="Add comentary"
+    )

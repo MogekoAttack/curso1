@@ -4,10 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
-from .forms import ListingForm, NewListing, NewBiding
+from .forms import ListingForm, NewListing, NewBiding, Comentary
 from django.contrib import messages
 
-from .models import User, Subasta, UserAttribute
+from .models import User, Subasta, UserAttribute, Oferta, Comentario
 
 def index(request):
     datos = Subasta.objects.all()
@@ -75,9 +75,11 @@ def new_listing_page(request):
 def create_listing(request):
     if request.method == 'POST':
         form = ListingForm(request.POST)
+        # print(form)
         if form.is_valid():
-            listing = form.save()
-            listing.owner = request.user
+            listing = form.save(commit=False)
+            listing.author = request.user
+            listing.open = True
             listing.save()
             return redirect(reverse("index"), id=listing.id)
     else:
@@ -87,22 +89,51 @@ def create_listing(request):
     })
 
 def element(request, id):
-    if UserAttribute.objects.filter(user=request.user.pk).first() is None:
+    
+    if UserAttribute.objects.filter(user=request.user.pk, follow_list=id).first() is None:
         follow = False
     else:
         follow = True
     element = Subasta.objects.filter(pk=id).first()
+    best_bid = Oferta.objects.filter(subasta=id).last()
+    if request.user == element.author:
+        creator = True
+    else:
+        creator = False
     if request.method == 'POST':
         form = NewBiding(request.POST)
+        comentario = Comentary(request.POST)
         if form.is_valid():
             campo = form.cleaned_data['new']
-            if campo <= element.starting_bid:
+            if best_bid == None:
+                best_bid = Oferta()
+                best_bid.subasta = element
+                best_bid.author = request.user
+                best_bid.bid = element.starting_bid
+                best_bid.save()
+            if campo <= best_bid.bid:
                 messages.error(request,"The new offer must be greater than the current offer")
             else:
-                element.starting_bid = campo
-                element.save()
+                nueva = Oferta()
+                nueva.subasta = element
+                nueva.author = request.user
+                nueva.bid = campo
+                # element.starting_bid = campo
+                nueva.save()
+                # element.save()
+                return HttpResponseRedirect(f"/element/{id}")
+        if comentario.is_valid():
+            user_text = comentario.cleaned_data['text']
+            nuevo_comentario = Comentario()
+            nuevo_comentario.author = request.user
+            nuevo_comentario.text = user_text
+            nuevo_comentario.subasta = Subasta.objects.filter(pk=id).first()
+            nuevo_comentario.save()
+            return HttpResponseRedirect(f"/element/{id}")
     else:
         form = NewBiding()
+        comentario = Comentary()
+    come = Comentario.objects.filter(subasta=id).all()
     return render(request, 'auctions/element.html',{
         "dato": element,
         "title": element.title,
@@ -112,6 +143,10 @@ def element(request, id):
         "category": element.category,
         "form": form,
         "follow": follow,
+        "creator": creator,
+        "best_bid": best_bid,
+        "comentario": comentario,
+        "listacomentarios": come,
     })
 
 def categories(request):
@@ -142,3 +177,37 @@ def follow(request, id):
         insert.follow_list = dato.pk
         insert.save()
     return element(request, id)
+
+def follow_list(request):
+    dato = UserAttribute.objects.filter(user=request.user).all()
+    listing = []
+    for pos in dato:
+        listing.append(Subasta.objects.filter(pk=pos.follow_list).first())
+    return render(request, 'auctions/follow_list.html',{
+        "list": listing,
+    })
+
+def delete(request, id):
+    # print(id)
+    Subasta.objects.filter(pk=id).first().delete()
+    return index(request)
+
+def my_listings(request):
+    winner = []
+    datos = Subasta.objects.filter(author=request.user).all()
+    datos_2 = Subasta.objects.filter(open=False).all()
+    for dato in datos_2:
+        bids = Oferta.objects.filter(subasta=dato.pk).last()
+        print(f"{bids.subasta.title}")
+        winner.append(bids)
+            
+    return render(request, 'auctions/my_listings.html',{
+        "datos": datos,
+        "winner": winner,
+    })
+
+def close(request, id):
+    dato = Subasta.objects.filter(pk=id).first()
+    dato.open = False
+    dato.save()
+    return HttpResponseRedirect(f"/element/{id}")

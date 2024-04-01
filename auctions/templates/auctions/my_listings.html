@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>My listings</h2>
+    {% for dato in datos %}
+        <a href="element/{{ dato.id }}" style="text-decoration: none; color: inherit;">
+            <div style="margin: 20px; display: flex; flex-direction: column; border-style: solid; border-color: gray;">
+                <p>Title: {{ dato.title }}</p>
+                <p>Description: {{ dato.text }}</p>
+                <p>Starting bid: {{ dato.starting_bid }}</p>
+                <img src="{{ dato.image_url }}" alt="Image not exist" width="30%" style="align-self: center;">
+            </div>
+        </a>
+    {% endfor %}
+    <h2>Winner</h2>
+    {% for win in winner %}
+        <a href="element/{{ win.subasta.id }}" style="text-decoration: none; color: inherit;">
+            <div style="margin: 20px; display: flex; flex-direction: column; border-style: solid; border-color: gray;">
+                <p>Title: {{ win.subasta.title }}</p>
+                <p>Description: {{ win.subasta.text }}</p>
+                <p>Starting bid: {{ win.subasta.starting_bid }}</p>
+                <img src="{{ win.subasta.image_url }}" alt="Image not exist" width="30%" style="align-self: center;">
+            </div>
+        </a>
+    {% endfor %}
+{% endblock %}
