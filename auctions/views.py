@@ -4,9 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
-from .forms import ListingForm, NewListing
+from .forms import ListingForm, NewListing, NewBiding
+from django.contrib import messages
 
-from .models import User, Subasta
+from .models import User, Subasta, UserAttribute
 
 def index(request):
     datos = Subasta.objects.all()
@@ -86,13 +87,31 @@ def create_listing(request):
     })
 
 def element(request, id):
+    if UserAttribute.objects.filter(user=request.user.pk).first() is None:
+        follow = False
+    else:
+        follow = True
     element = Subasta.objects.filter(pk=id).first()
+    if request.method == 'POST':
+        form = NewBiding(request.POST)
+        if form.is_valid():
+            campo = form.cleaned_data['new']
+            if campo <= element.starting_bid:
+                messages.error(request,"The new offer must be greater than the current offer")
+            else:
+                element.starting_bid = campo
+                element.save()
+    else:
+        form = NewBiding()
     return render(request, 'auctions/element.html',{
+        "dato": element,
         "title": element.title,
         "text": element.text,
         "bid": element.starting_bid,
         "image": element.image_url,
         "category": element.category,
+        "form": form,
+        "follow": follow,
     })
 
 def categories(request):
@@ -111,3 +130,15 @@ def select_category(request, category_a):
         "category": category_a,
         "list": list,
     })
+
+def follow(request, id):
+    dato = Subasta.objects.filter(pk=id).first()
+    insert = UserAttribute()
+    # print(f"{request.user}")
+    if UserAttribute.objects.filter(user=request.user, follow_list=id).first():
+        UserAttribute.objects.filter(user=request.user, follow_list=id).first().delete()
+    else:
+        insert.user = User.objects.filter(username=request.user).first()
+        insert.follow_list = dato.pk
+        insert.save()
+    return element(request, id)

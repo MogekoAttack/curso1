@@ -11,4 +11,5 @@ urlpatterns = [
     path("element/<str:id>", views.element, name="element"),
     path("categories", views.categories, name="categories"),
     path("categories/<str:category_a>", views.select_category, name="select_category"),
+    path("follow/<int:id>", views.follow, name="follow"),
 ]

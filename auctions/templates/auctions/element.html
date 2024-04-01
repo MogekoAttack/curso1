@@ -6,7 +6,31 @@
         <img src="{{ image }}" alt="Image not exist" width="70%" style="align-self: center;">
         <p>Description: {{ text }}</p>
         <h3>$ {{ bid }}</h3>
-        <p></p>
+        {% if user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit">New biding</button>
+                {% if messages %}
+                    <ul class="messages" style="background-color: red; color: white; font-weight: bolder; display: flex; justify-content: center;">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </form>
+            {% if follow %}
+                <a href="/follow/{{ dato.id }}">
+                    <button>Remove from follow list</button>
+                </a>
+            {% else %}
+                <a href="/follow/{{ dato.id }}">
+                    <button>Add follow list</button>
+                </a>
+            {% endif %}
+        {% else %}
+            Not signed in.
+        {% endif %}
         <h3 style="align-self: center;">Category: {{ category }}</h3>
     </div>
 {% endblock %}

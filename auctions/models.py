@@ -4,6 +4,15 @@ from django.db import models
 class User(AbstractUser):
     pass
 
+class UserAttribute(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+    follow_list = models.CharField(
+        max_length=1024,
+    )
+
 class Subasta(models.Model):
     title = models.CharField(
         max_length = 64,

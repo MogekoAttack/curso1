@@ -21,3 +21,6 @@ class NewListing(forms.Form):
         bid = forms.IntegerField()
         image_url = forms.CharField(required=False)
         category = forms.CharField(required=False)
+
+class NewBiding(forms.Form):
+    new = forms.IntegerField()
