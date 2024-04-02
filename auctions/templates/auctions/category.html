@@ -2,13 +2,15 @@
 {% block body %}
     <h2>Selected category: {{ category }}</h2>
     {% for element in list %}
-    <a href="/element/{{ element.id }}" style="text-decoration: none; color: inherit;">
-        <div style="margin: 20px; display: flex; flex-direction: column; border-style: solid; border-color: gray;">
-            <p>Title: {{ element.title }}</p>
-            <p>Description: {{ element.text }}</p>
-            <p>Starting bid: {{ element.starting_bid }}</p>
-            <img src="{{ element.image_url }}" alt="Image not exist" width="30%" style="align-self: center;">
-        </div>
-    </a>
+        <a href="element/{{ element.id }}" style="text-decoration: none; color: inherit;">
+            <div style="margin: 20px; display: flex; flex-direction: row; border-style: solid; border-color: gray; height: 20%;">
+                <img src="{{ element.image_url }}" alt="Image not exist" width="20%" style="align-self: center;">
+                <div>
+                    <h2>{{ element.title }}</h2>
+                    <h3>Price: {{ element.starting_bid }}</h3>
+                    <p>Description: {{ element.text }}</p>
+                </div>
+            </div>
+        </a>
     {% endfor %}
 {% endblock %}

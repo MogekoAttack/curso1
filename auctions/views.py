@@ -80,6 +80,10 @@ def create_listing(request):
             listing = form.save(commit=False)
             listing.author = request.user
             listing.open = True
+            if listing.category == "":
+                listing.category = "Without category"
+            if listing.image_url == "":
+                listing.image_url = "https://cdn-icons-png.flaticon.com/512/1257/1257249.png"
             listing.save()
             return redirect(reverse("index"), id=listing.id)
     else:
@@ -89,7 +93,6 @@ def create_listing(request):
     })
 
 def element(request, id):
-    
     if UserAttribute.objects.filter(user=request.user.pk, follow_list=id).first() is None:
         follow = False
     else:
@@ -190,7 +193,7 @@ def follow_list(request):
 def delete(request, id):
     # print(id)
     Subasta.objects.filter(pk=id).first().delete()
-    return index(request)
+    return HttpResponseRedirect(reverse("index"))
 
 def my_listings(request):
     winner = []

@@ -14,13 +14,11 @@ class ListingForm(forms.ModelForm):
         ]
 
 class NewListing(forms.Form):
-    class Meta:
-        model = Subasta
-        title = forms.CharField()
-        description = forms.CharField(widget=forms.Textarea())
-        bid = forms.IntegerField()
-        image_url = forms.CharField(required=False)
-        category = forms.CharField(required=False)
+    title = forms.CharField()
+    description = forms.CharField(widget=forms.Textarea())
+    bid = forms.IntegerField()
+    image_url = forms.CharField(required=False)
+    category = forms.CharField(required=False)
 
 class NewBiding(forms.Form):
     new = forms.IntegerField()

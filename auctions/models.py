@@ -25,9 +25,11 @@ class Subasta(models.Model):
     )
     image_url = models.CharField(
         max_length = 1024,
+        blank=True,
     )
     category = models.CharField(
         max_length = 64,
+        blank=True,
     )
     author = models.ForeignKey(
         User,
@@ -36,6 +38,9 @@ class Subasta(models.Model):
     open = models.BooleanField(
         default = True,
     )
+
+    def __str__(self):
+        return f"{self.title}"
 
     
 class Oferta(models.Model):
@@ -57,6 +62,8 @@ class Oferta(models.Model):
     bid = models.IntegerField(
         null=True,
     )
+    def __str__(self):
+        return f"Author: {self.author} Price: {self.bid}"
 
 
 class Comentario(models.Model):
@@ -71,3 +78,5 @@ class Comentario(models.Model):
         Subasta,
         on_delete=models.CASCADE,
     )
+    def __str__(self):
+        return f"Author: {self.author} in {self.subasta}"
