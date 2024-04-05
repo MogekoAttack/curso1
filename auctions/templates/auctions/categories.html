@@ -1,8 +1,0 @@
-{% extends "auctions/layout.html" %}
-{% block body %}
-    {% for element in list %}
-        <a href="categories/{{ element }}" style="text-decoration: none; color: inherit;">
-            <h2>{{ element }}</h2>
-        </a>
-    {% endfor %}
-{% endblock %}
