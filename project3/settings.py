@@ -120,4 +120,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD:project3/settings.py
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+=======
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+>>>>>>> 516752e3d89a829ab8573fede3f660a97edf3bf8:commerce/settings.py
