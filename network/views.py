@@ -1,10 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import User
+from .models import User, Post, Profile
+
+from .forms import PostForm, Post
 
 
 def index(request):
@@ -61,3 +65,85 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+def new_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+        return render(request, "network/index.html")
+    else:
+        form = PostForm()
+    return render(request, "network/new_post.html",{
+        'form': form,
+    })
+
+def all_post(request):
+    posts = Post.objects.all().order_by("-created")
+
+    paginator = Paginator(posts, 10)
+    page = request.GET.get('page')
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+        
+    return render(request, 'network/all_post.html', {
+        'posts': posts,
+    })
+
+@login_required
+def profile_view(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = user.profile
+    posts = Post.objects.filter(user=user).order_by('-created')
+    is_following = False
+
+    if request.user.is_authenticated:
+        is_following = request.user in profile.followers.all()
+
+    context = {
+        'profile_user': user,
+        'profile': profile,
+        'posts': posts,
+        'is_following': is_following,
+    }
+
+    return render(request, 'network/profile.html', context)
+
+@login_required
+def toggle_follow(request, username):
+    user_to_follow = get_object_or_404(User, username=username)
+    profile = user_to_follow.profile
+
+    if request.user in profile.followers.all():
+        profile.followers.remove(request.user)
+    else:
+        profile.followers.add(request.user)
+
+    return redirect('profile_view', username=username)
+
+@login_required
+def following_posts(request):
+    profile = request.user.profile
+    following_users = profile.followers.all()
+    posts = Post.objects.filter(user__in=following_users).order_by('-created')
+    
+    paginator = Paginator(posts, 10)
+    page = request.GET.get('page')
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    
+    return render(request, 'network/following.html', {
+        'posts': posts
+    })
