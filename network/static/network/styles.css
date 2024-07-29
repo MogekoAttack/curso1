@@ -1,21 +1,6 @@
-.pagination {
-    display: inline-block;
-}
-
-.step-links a {
-    color: #007bff;
-    text-decoration: none;
-    padding: 8px 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin: 0 2px;
-}
-
-.step-links a:hover {
-    background-color: #ddd;
-}
-
-.step-links .disabled {
-    color: #ccc;
-    cursor: not-allowed;
+.paginacion {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 0px 0px 1vh 0px;
 }

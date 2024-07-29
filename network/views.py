@@ -149,7 +149,7 @@ def following_posts(request):
         # posts.append(Post.objects.filter(user_id=id).all())
         # Post.objects.filter(user_id=3).order_by('-created')
     print('post --> ', posts)
-    paginator = Paginator(posts, 1)
+    paginator = Paginator(posts, 10)
     page = request.GET.get('page')
 
     try:
