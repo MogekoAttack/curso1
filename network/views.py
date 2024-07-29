@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -100,8 +100,12 @@ def all_post(request):
 @login_required
 def profile_view(request, username):
     user = get_object_or_404(User, username=username)
+    print('usuario --> ', request.user.id)
+    # print('user ---> ', user)
     profile = user.profile
+    # print('profile ---> ', profile)
     posts = Post.objects.filter(user=user).order_by('-created')
+    # print('posts ---> ', posts)
     is_following = False
 
     if request.user.is_authenticated:
@@ -118,13 +122,16 @@ def profile_view(request, username):
 
 @login_required
 def toggle_follow(request, username):
-    user_to_follow = get_object_or_404(User, username=username)
-    profile = user_to_follow.profile
+    usuario_iniciado = get_object_or_404(User, username=request.user)
+    perfil_seguidor = usuario_iniciado.profile
+    
+    usuario_a_seguir = get_object_or_404(User, username=username)
+    perfil_a_seguir = usuario_a_seguir.profile
 
-    if request.user in profile.followers.all():
-        profile.followers.remove(request.user)
+    if request.user in perfil_seguidor.followers.all():
+        perfil_seguidor.followers.remove(User.objects.filter(username=username).first().pk)
     else:
-        profile.followers.add(request.user)
+        perfil_seguidor.followers.add(User.objects.filter(username=username).first().pk)
 
     return redirect('profile_view', username=username)
 
@@ -132,9 +139,17 @@ def toggle_follow(request, username):
 def following_posts(request):
     profile = request.user.profile
     following_users = profile.followers.all()
-    posts = Post.objects.filter(user__in=following_users).order_by('-created')
-    
-    paginator = Paginator(posts, 10)
+    posts = []
+    for follow in following_users:
+        print("Follow --> ", follow)
+        id = User.objects.filter(username=follow).first()
+        user_post = Post.objects.filter(user_id=id).order_by('-created')
+        posts.extend(user_post)
+        # print('id --> ', id.pk)
+        # posts.append(Post.objects.filter(user_id=id).all())
+        # Post.objects.filter(user_id=3).order_by('-created')
+    print('post --> ', posts)
+    paginator = Paginator(posts, 1)
     page = request.GET.get('page')
 
     try:
@@ -147,3 +162,23 @@ def following_posts(request):
     return render(request, 'network/following.html', {
         'posts': posts
     })
+
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.user != request.user:
+        return JsonResponse({
+            'error': 'Usted no tiene un usuario registrado',
+        }, status=403)
+    
+    content = request.POST.get('content', '')
+    if content:
+        post.content = content
+        post.save()
+        return JsonResponse({
+            'sucess': 'Post actualizado correctamente :D'
+        })
+    else:
+        return JsonResponse({
+            'error': 'Este post no existe D:'
+        })

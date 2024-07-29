@@ -1,7 +1,7 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    <h1>{{ profile_user.username }}'s Profile</h1>
+    <h1>{{ profile_user.username }}'s Profile ID {{ profile_user.pk }}</h1>
     <p>Followers: {{ profile.followers.count }}</p>
     <p>Following: {{ profile_user.following.count }}</p>
 
