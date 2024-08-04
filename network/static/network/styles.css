@@ -4,3 +4,10 @@
     justify-content: center;
     margin: 0px 0px 1vh 0px;
 }
+
+.boton-estandar {
+    background-color: black;
+    color: white;
+    padding: 0.5em 1em 0.5em 1em;
+    text-decoration: none;
+}

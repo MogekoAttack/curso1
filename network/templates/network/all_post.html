@@ -4,12 +4,14 @@
     {% if user.is_authenticated %}
         <h1>Posts</h1>
         {% for post in posts %}
-            <div style="border: 1px solid black; margin: 1vh; padding: 0vh 1vh 0vh 1vh;">
+            <div id="contenedor-{{ post.id }}-{{ post.user }}" style="border: 1px solid black; margin: 1vh; padding: 0vh 1vh 1vh 1vh;">
                 <a href="{% url 'profile_view' username=post.user %}"><p>Created by: {{ post.user }}</p></a>
-                <p style="word-wrap: break-word;">{{ post.content }}</p>
+                <p id="post{{ post.id }}-{{ post.user }}" style="word-wrap: break-word;">{{ post.content }}</p>
                 <p>Date: {{ post.created }}</p>
                 <p>Likes {{ post.likes }}</p>
-                
+                {% if request.user == post.user %}
+                    <button id="boton-editar-post{{ post.id }}-{{ post.user }}" class="boton-estandar" onclick="Editar('post{{ post.id }}-{{ post.user }}')">Editar</button>
+                {% endif %}
             </div>
         {% endfor %}
         <div class="paginacion">

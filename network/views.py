@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import json
 
 from .models import User, Post, Profile
 
@@ -164,21 +165,26 @@ def following_posts(request):
     })
 
 def edit_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        try:
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+            texto = body['texto']
+            
+            post = get_object_or_404(Post, id=post_id)
 
-    if post.user != request.user:
-        return JsonResponse({
-            'error': 'Usted no tiene un usuario registrado',
-        }, status=403)
-    
-    content = request.POST.get('content', '')
-    if content:
-        post.content = content
-        post.save()
-        return JsonResponse({
-            'sucess': 'Post actualizado correctamente :D'
-        })
+            if post.user != request.user:
+                return JsonResponse({
+                    'error': 'Usted no tiene un usuario registrado',
+                }, status=403)
+
+            # Aquí puedes actualizar el contenido del post
+            post.content = texto
+            post.save()
+
+            return JsonResponse({'success': True, 'message': 'Post actualizado con éxito'})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Datos inválidos'}, status=400)
     else:
-        return JsonResponse({
-            'error': 'Este post no existe D:'
-        })
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
