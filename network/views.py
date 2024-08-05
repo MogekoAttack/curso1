@@ -101,8 +101,8 @@ def all_post(request):
 @login_required
 def profile_view(request, username):
     user = get_object_or_404(User, username=username)
-    print('usuario --> ', request.user.id)
-    # print('user ---> ', user)
+    # print('Visitando la pagina de ---> ', user)
+    # print('Sesion iniciada de --->', request.user)
     profile = user.profile
     # print('profile ---> ', profile)
     posts = Post.objects.filter(user=user).order_by('-created')
@@ -110,7 +110,7 @@ def profile_view(request, username):
     is_following = False
 
     if request.user.is_authenticated:
-        is_following = request.user in profile.followers.all()
+        is_following = user in request.user.profile.followers.all()
 
     context = {
         'profile_user': user,
@@ -123,16 +123,27 @@ def profile_view(request, username):
 
 @login_required
 def toggle_follow(request, username):
+    user = get_object_or_404(User, username=username)
+
     usuario_iniciado = get_object_or_404(User, username=request.user)
     perfil_seguidor = usuario_iniciado.profile
+    
+    print('Visitando la pagina de ---> ', user)
+    print('Sesion iniciada de --->', request.user)
     
     usuario_a_seguir = get_object_or_404(User, username=username)
     perfil_a_seguir = usuario_a_seguir.profile
 
-    if request.user in perfil_seguidor.followers.all():
-        perfil_seguidor.followers.remove(User.objects.filter(username=username).first().pk)
+    if user in request.user.profile.followers.all():
+        # perfil_seguidor.followers.remove(User.objects.filter(username=username).first().pk)
+        request.user.profile.followers.remove(user)
+        print("Si lo sigue")
+        pass
     else:
-        perfil_seguidor.followers.add(User.objects.filter(username=username).first().pk)
+        request.user.profile.followers.add(user)
+        # perfil_seguidor.followers.add(User.objects.filter(username=username).first().pk)
+        pass
+        print("No lo sigue")
 
     return redirect('profile_view', username=username)
 
