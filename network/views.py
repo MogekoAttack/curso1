@@ -199,3 +199,29 @@ def edit_post(request, post_id):
             return JsonResponse({'error': 'Datos inválidos'}, status=400)
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
+    
+@login_required
+def toggle_like(request, username):
+    user = get_object_or_404(User, username=username)
+
+    usuario_iniciado = get_object_or_404(User, username=request.user)
+    perfil_seguidor = usuario_iniciado.profile
+    
+    print('Visitando la pagina de ---> ', user)
+    print('Sesion iniciada de --->', request.user)
+    
+    usuario_a_seguir = get_object_or_404(User, username=username)
+    perfil_a_seguir = usuario_a_seguir.profile
+
+    if user in request.user.profile.followers.all():
+        # perfil_seguidor.followers.remove(User.objects.filter(username=username).first().pk)
+        request.user.profile.followers.remove(user)
+        print("Si lo sigue")
+        pass
+    else:
+        request.user.profile.followers.add(user)
+        # perfil_seguidor.followers.add(User.objects.filter(username=username).first().pk)
+        pass
+        print("No lo sigue")
+
+    return redirect('profile_view', username=username)
