@@ -8,7 +8,10 @@
                 <a href="{% url 'profile_view' username=post.user %}"><p>Created by: {{ post.user }}</p></a>
                 <p style="word-wrap: break-word;">{{ post.content }}</p>
                 <p>Date: {{ post.created }}</p>
-                <p>Likes {{ post.likes }}</p>
+                <p id="likes-post{{ post.id }}">Likes: {{ post.total_likes }}</p>
+                <button id="boton-like-post{{ post.id }}" class="boton-estandar btn-link-global" onclick="Like('{{ post.id }}')">
+                    Like
+                </button>
             </div>
         {% endfor %}
         <div class="paginacion">

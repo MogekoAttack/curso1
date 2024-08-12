@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 
-from .models import User, Post, Profile
+from .models import User, Post, Profile, Like
 
 from .forms import PostForm, Post
 
@@ -225,3 +225,27 @@ def toggle_like(request, username):
         print("No lo sigue")
 
     return redirect('profile_view', username=username)
+
+@login_required
+def like_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    
+    num_likes = Like.objects.filter(post_id=post_id).all().count()
+    like_final = Like.objects.filter(post_id=post_id).filter(user_id=request.user.pk).count()
+    if not created:
+        like.delete()
+        liked = False
+    else:
+        liked = True
+    
+    return JsonResponse({"num_likes": num_likes, "like": like_final})
+
+
+@login_required
+def verificar_like(request, post_id):
+    num_likes = Like.objects.filter(post_id=post_id).all().count()
+    like = Like.objects.filter(post_id=post_id).filter(user_id=request.user.pk).count()
+    # print(f"total {num_likes}")
+    # print(like)
+    return JsonResponse({"num_likes": num_likes, "like": like})

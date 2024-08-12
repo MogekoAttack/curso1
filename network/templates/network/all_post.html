@@ -8,8 +8,10 @@
                 <a href="{% url 'profile_view' username=post.user %}"><p>Created by: {{ post.user }}</p></a>
                 <p id="post{{ post.id }}-{{ post.user }}" style="word-wrap: break-word;">{{ post.content }}</p>
                 <p>Date: {{ post.created }}</p>
-                <button id="boton-like-{{ post.id }}" class="boton-estandar">Like</button>
-                <p>Likes {{ post.likes }}</p>
+                <p id="likes-post{{ post.id }}">Likes: {{ post.total_likes }}</p>
+                <button id="boton-like-post{{ post.id }}" class="boton-estandar btn-link-global" onclick="Like('{{ post.id }}')">
+                    Like
+                </button>
                 {% if request.user == post.user %}
                     <button id="boton-editar-post{{ post.id }}-{{ post.user }}" class="boton-estandar" onclick="Editar('post{{ post.id }}-{{ post.user }}')">Editar</button>
                 {% endif %}

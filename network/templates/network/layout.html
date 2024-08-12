@@ -20,13 +20,13 @@
                         <a class="nav-link" href="{% url 'profile_view' username=user.username %}"><strong>{{ user.username }}</strong></a>
                     </li>
                 {% endif %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'all_post' %}">All Posts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'new_post' %}">New Post</a>
-                </li>
                 {% if user.is_authenticated %}
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'all_post' %}">All Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'new_post' %}">New Post</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'following' %}">Following</a>
                     </li>

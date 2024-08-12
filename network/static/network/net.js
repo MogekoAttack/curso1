@@ -1,4 +1,9 @@
-document.addEventListener("DOMContentLoaded", evt =>{
+document.addEventListener("DOMContentLoaded", async (evt) => {
+    let elements = document.querySelectorAll(`.btn-link-global`);
+    for (const element of elements) {
+        let verificar_like = await Verificar(element.id.toString().split(`boton-like-post`)[1]);
+        verificar_like[`like`] === 1 ? element.innerText = `Unlike` : false;
+    }
 });
 
 function Editar(id){
@@ -63,4 +68,37 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+async function Like(id){
+    await fetch(`/like/${id}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+    }).then(response =>{
+        return response.json();
+    }).then(data => {
+        console.log('data: ', data);
+        return data;
+    });
+    let datos = await Verificar(id);
+    if (datos[`like`] === 1) {
+        document.getElementById(`boton-like-post${id}`).innerText = `Unlike`;
+    } else {
+        document.getElementById(`boton-like-post${id}`).innerText = `Like`;
+    }
+    document.getElementById(`likes-post${id}`).innerText = `Likes: ${datos['num_likes'].toString()}`;
+}
+
+
+
+async function Verificar(id){
+    let datos = await fetch(`/verificar/${id}/`).then(response =>{
+        return response.json();
+    }).then(data => {
+        return data;
+    });
+    console.log('datos: ', datos);
+    return datos;
 }
