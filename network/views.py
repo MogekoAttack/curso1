@@ -188,8 +188,6 @@ def edit_post(request, post_id):
                 return JsonResponse({
                     'error': 'Usted no tiene un usuario registrado',
                 }, status=403)
-
-            # Aquí puedes actualizar el contenido del post
             post.content = texto
             post.save()
 
