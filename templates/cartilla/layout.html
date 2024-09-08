@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perritos cartilla</title>
+    <link rel="stylesheet" href="{% static 'cartilla/global.css' %}">
+</head>
+<body id="body-layout">
+    <header>
+        <h1>Perritos cartilla</h1>
+        <ul>
+            <li>Login</li>
+            <li>Characteristics</li>
+            <li>FAQ</li>
+        </ul>
+    </header>
+        {% block body %}
+
+        {% endblock %}
+    <footer>
+        <h3>All rigths reserverd</h3>
+    </footer>
+</body>
+</html>

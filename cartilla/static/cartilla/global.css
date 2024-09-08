@@ -1,0 +1,84 @@
+@media (orientation: landscape) {
+	#body-layout>header>ul {
+		margin-left: auto;
+		list-style: none;
+		display: flex;
+		justify-items: center;
+		align-items: center;
+	}
+
+	#body-layout>header {
+		display: flex;
+		border-bottom: 1px solid black;
+	}
+
+	#body-layout>header>h1 {
+		color: black;
+	}
+
+	#body-layout>header>ul>li {
+		margin: 0rem 3rem;
+	}
+
+	#body-layout {
+
+		display: flex;
+
+		flex-direction: column;
+
+		min-height: 97vh;
+	}
+
+	#body-layout>footer {
+		margin-top: auto;
+		border-top: 1px solid black;
+	}
+
+	#index-container {
+		background-color: beige;
+		display: flex;
+		border-radius: 35px;
+		align-self: center;
+
+		margin: 1em;
+
+	}
+
+	#index-container>span {
+		padding: 1em;
+	}
+
+	#index-container>span>h1 {
+
+		text-align: center;
+
+	}
+
+	#index-container>span>div {
+
+		display: flex;
+
+	}
+
+	#index-container>span>div>p {
+
+		width: 10em;
+
+		text-align: start;
+
+	}
+}
+
+#index-foto {
+	height: 60vh;
+	width: 60vh;
+	margin: 1em;
+	border-radius: 35px;
+	background-image: url('/static/cartilla/img/perrito1.jpg');
+	background-position: center;
+	background-size: cover;
+}
+
+.dog-paw {
+	background-image: url('/static/cartilla/img/dog-paw.png');
+}

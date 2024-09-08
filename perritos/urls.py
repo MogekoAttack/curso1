@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from cartilla import views as cartilla_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # CUTOM URLS
+    path('', cartilla_views.index, name='index'),
 ]

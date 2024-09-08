@@ -1,0 +1,24 @@
+{% extends "cartilla/layout.html" %}
+{% load static %}
+{% block body %}
+    <article id="index-container">
+        <div id="index-foto"></div>
+        <span>
+            <h1>What are we?</h1>
+            <div>
+                <p>
+                    We are a web application that will allow you to track important events or milestones in your pet's life.
+                    <br><br>
+                    <img src="{% static 'cartilla/img/dog-paw.png' %}" alt="Image not found :c" height="100" style="margin: auto; display: block;">
+                </p>
+                <p>
+                    <strong>What kind of events?</strong>
+                    This site is primarily designed for keeping track of your special one's vaccinations, but you can also monitor their baths, accidents, training, or any event related to an illness.
+                    <br><br>
+                    <strong>Is it only for dogs?</strong>
+                    No, don't let our design fool you! You can register cats, raccoons, hedgehogs, fish, or any pet. We are constantly evolving to adapt to the needs of our small or large friends.
+                </p>
+            </div>
+        </span>
+    </article>
+{% endblock %}
