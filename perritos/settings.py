@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # USER INSTALLED APS
     'cartilla',
+    'sistema',
 ]
 
 MIDDLEWARE = [
