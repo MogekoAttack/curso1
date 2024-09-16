@@ -1,0 +1,40 @@
+{% extends "cartilla/layout.html" %}
+{% load static %}
+
+{% block head %}
+    <script src="{% static 'cartilla/register.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="user-type" class="generic-container">
+        <input type="button" value="I'm Veterinian" onclick="UserType(`vet`)">
+        <input type="button" value="I'm Owner" onclick="UserType(`owner`)">
+        {% if message %}
+            <h1>{{ message }}</h1>
+        {% endif %}
+    </div>
+    <div id="user-owner" class="generic-container">
+        <input type="button" value="<" onclick="Return(`owner`)">
+        <form action="{% url 'register' 'owner' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" id="register-owner-username" placeholder="Username" required>
+            <input type="text" name="email" id="register-owner-email" placeholder="Email" required>
+            <input type="text" name="password" id="register-owner-password" placeholder="Password" required>
+            <input type="text" name="confirmation" id="register-owner-confirmation" placeholder="Confirmate your password c:" required>
+            <input type="submit" value="Register!">
+        </form>
+    </div>
+    <div id="user-vet" class="generic-container">
+        <input type="button" value="<" onclick="Return(`vet`)">
+        <form action="{% url 'register' 'vet' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="id" id="register-vet-id" placeholder="Enter your professional ID" required>
+            <h3>We will not verify your ID but it will be visible to the owners of the animals</h3>
+            <input type="text" name="username" id="register-vet-username" placeholder="Username" required>
+            <input type="text" name="email" id="register-vet-email" placeholder="Email" required>
+            <input type="text" name="password" id="register-vet-password" placeholder="Password" required>
+            <input type="text" name="confirmation" id="register-vet-confirmation" placeholder="Confirmate your password c:" required>
+            <input type="submit" value="Register!">
+        </form>
+    </div>
+{% endblock %}

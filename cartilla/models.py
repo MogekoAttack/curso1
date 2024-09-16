@@ -1,5 +1,6 @@
 from django.db import models
 
+from sistema import models as sistema_models
 def user_directory_path(instance, filename): 
     return 'user_{0}/{1}'.format(instance.user.id, filename) 
 
@@ -13,6 +14,34 @@ class Pet(models.Model):
 
     photo = models.ImageField(
         upload_to=user_directory_path,
+        verbose_name='Ingrese la foto de su mascota',
+        blank=True,
+        null=True,
     )
 
-    
+    owner = models.ForeignKey(
+        sistema_models.User,
+        on_delete=models.CASCADE,
+        related_name='owner',
+    )
+
+class Milestone(models.Model):
+    name = models.CharField(
+        max_length=32,
+        verbose_name='Nombre del evento',
+    )
+
+    description = models.TextField(
+        max_length=2048,
+        verbose_name='Ingrese con detalle la descripccion del evento',
+    )
+
+    date = models.DateField(
+        blank=True,
+    )
+
+    pet = models.ForeignKey(
+        Pet,
+        on_delete=models.CASCADE,
+        related_name='milestones'
+    )

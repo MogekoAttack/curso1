@@ -1,5 +1,39 @@
 {% extends "cartilla/layout.html" %}
 {% load static %}
 {% block body %}
-    <h1>HOME</h1>
+	{% if user.is_authenticated == false %}
+		<h1>Please Login or register!</h1>
+	{% else %}
+		<div id="home-body">
+			<article id="home-user" class="generic-container">
+				<h2 id="home-username">Name: {{ user.username }}</h2>
+				<span id="home-pets">
+					<h2>Pets: </h2>
+					<ul>
+						<li>Pet 1</li>
+						<li>Pet 2</li>
+					</ul>
+				</span>
+			</article>
+
+			<article class="home-pet generic-container">
+				<h2 class="home-pet-title">Name: </h2>
+				<h2 class="home-pet-title">Kind: </h2>
+				<span class="pet-vet"></span>
+					<h2>Veterinarians: </h2>
+					<ul>
+						<li>Vet 1</li>
+						<li>Vet 2</li>
+					</ul>
+				</span>
+				<span class="pet-mil">
+					<h2>Milestones</h2>
+					<ul>
+						<li>Mil 1</li>
+						<li>Mil 2</li>
+					</ul>
+				</span>
+			</article>
+		</div>
+	{% endif %}
 {% endblock %}

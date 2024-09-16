@@ -1,3 +1,64 @@
+body {
+	font-family: 'Open Sans';
+}
+
+* {
+	cursor: default;
+}
+
+#index-foto {
+	height: auto;
+	width: 60vh;
+	margin: 1em;
+	border-radius: 35px;
+	background-image: url('/static/cartilla/img/perrito1.jpg');
+	background-position: center;
+	background-size: cover;
+}
+
+/* HOME USER */
+
+#home-body {
+
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+
+.generic-container {
+	
+	border: 1px solid black;
+	border-radius: 30px;
+	margin: 2em;
+	padding: 1em 2em;
+	min-width: 18em;
+	background-color: antiquewhite;
+}
+
+.dog-paw {
+	background-image: url('/static/cartilla/img/dog-paw.png');
+}
+
+.button:hover,
+strong:hover {
+	cursor: pointer;
+}
+
+.upper {
+	text-transform: uppercase;
+}
+
+#user-owner {
+	display: none;
+}
+
+#user-vet {
+	display: none;
+}
+
+
+
 @media (orientation: landscape) {
 	#body-layout>header>ul {
 		margin-left: auto;
@@ -21,11 +82,8 @@
 	}
 
 	#body-layout {
-
 		display: flex;
-
 		flex-direction: column;
-
 		min-height: 97vh;
 	}
 
@@ -39,9 +97,7 @@
 		display: flex;
 		border-radius: 35px;
 		align-self: center;
-
 		margin: 1em;
-
 	}
 
 	#index-container>span {
@@ -49,36 +105,60 @@
 	}
 
 	#index-container>span>h1 {
-
 		text-align: center;
-
 	}
 
 	#index-container>span>div {
-
 		display: flex;
-
 	}
 
 	#index-container>span>div>p {
-
 		width: 10em;
-
 		text-align: start;
-
 	}
-}
 
-#index-foto {
-	height: 60vh;
-	width: 60vh;
-	margin: 1em;
-	border-radius: 35px;
-	background-image: url('/static/cartilla/img/perrito1.jpg');
-	background-position: center;
-	background-size: cover;
-}
+	#login-form {
+		border: 1px solid black;
+		border-radius: 30px;
+		padding: 3em;
+		width: 40%;
+		display: flex;
+		flex-direction: column;
+		margin: auto;
+	}
 
-.dog-paw {
-	background-image: url('/static/cartilla/img/dog-paw.png');
+	#login-form>* {
+		margin: 0.5em;
+		border-radius: 30px;
+	}
+
+	#login-form>input {
+		display: flex;
+		border: 1px solid black;
+		height: 2em;
+		text-align: center;
+	}
+
+	#login-form>h1 {
+		text-align: center;
+	}
+
+	#login-register-container {
+		text-align: center;
+		width: 100%;
+		margin: auto;
+	}
+
+	#user-type {
+		display: flex;
+		height: 50vh;
+		flex-direction: column;
+		justify-content: center;
+		align-self: center;
+	  }
+	  #user-type > input {
+		width: 30em;
+		height: 4em;
+		margin: 1em;
+	  }
 }
