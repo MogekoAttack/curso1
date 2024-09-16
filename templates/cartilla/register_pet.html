@@ -1,0 +1,17 @@
+{% extends "cartilla/layout.html" %}
+{% load static %}
+
+{% block head %}
+    <script src="{% static 'cartilla/register_pet.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <form action="{% url 'register_pet' %}" method="post" class="generic-container">
+        {% csrf_token %}
+        <input type="text" name="name" id="" placeholder="Username" required>
+        {% if message %}
+            {{ message }}
+        {% endif %}
+        <input type="submit" value="Register!">
+    </form>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-from sistema import models as sistema_models
 def user_directory_path(instance, filename): 
     return 'user_{0}/{1}'.format(instance.user.id, filename) 
 
@@ -20,7 +20,7 @@ class Pet(models.Model):
     )
 
     owner = models.ForeignKey(
-        sistema_models.User,
+        User,
         on_delete=models.CASCADE,
         related_name='owner',
     )

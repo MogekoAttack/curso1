@@ -4,7 +4,9 @@ from django.http.response import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from .models import Veterinian
+from cartilla.models import Pet
 
 # Create your views here.
 
@@ -74,3 +76,21 @@ def register_view(request, type):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "cartilla/register.html")
+    
+@login_required
+def register_pet(request):
+    if request.method == "POST":
+        try:
+            new = Pet()
+            new.name = request.POST["name"]
+            new.owner = request.user
+            new.save()
+        except IntegrityError:
+            return render(request, "cartilla/register_pet.html", {
+                "message": "Error in register pet",
+            })
+        return render(request, "cartilla/home.html")
+    else:
+        return render(request, "cartilla/register_pet.html", {
+
+        })

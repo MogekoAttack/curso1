@@ -26,4 +26,5 @@ urlpatterns = [
     path('login/', sistema_views.login_view, name='login'),
     path('logout/', sistema_views.logout_view, name='logout'),
     path('register/<str:type>', sistema_views.register_view, name='register'),
+    path('register_pet', sistema_views.register_pet, name='register_pet')
 ]
