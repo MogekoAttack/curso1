@@ -12,6 +12,12 @@ class Pet(models.Model):
         verbose_name='Pet name:',
     )
 
+    kind = models.CharField(
+        max_length=32,
+        verbose_name='Kind',
+        default="Sin especie",
+    )
+
     photo = models.ImageField(
         upload_to=user_directory_path,
         verbose_name='Ingrese la foto de su mascota',

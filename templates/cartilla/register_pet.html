@@ -8,7 +8,12 @@
 {% block body %}
     <form action="{% url 'register_pet' %}" method="post" class="generic-container">
         {% csrf_token %}
-        <input type="text" name="name" id="" placeholder="Username" required>
+        <input type="text" name="name" id="" placeholder="Name" required>
+        <select name="kind" required>
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="other">Other</option>
+        </select>
         {% if message %}
             {{ message }}
         {% endif %}

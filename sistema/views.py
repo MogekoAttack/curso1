@@ -83,13 +83,14 @@ def register_pet(request):
         try:
             new = Pet()
             new.name = request.POST["name"]
+            new.kind = request.POST["kind"]
             new.owner = request.user
             new.save()
         except IntegrityError:
             return render(request, "cartilla/register_pet.html", {
                 "message": "Error in register pet",
             })
-        return render(request, "cartilla/home.html")
+        return  HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "cartilla/register_pet.html", {
 

@@ -7,34 +7,41 @@
 		<div id="home-body">
 			<article id="home-user" class="generic-container">
 				<h2 id="home-username">Name: {{ user.username }}</h2>
+				{% if type == None %}
+					<h2> Type: Owner</h2>
+				{% else %}
+					<h2>Type: Veterinarian</h2>
+				{% endif %}
 				<span id="home-pets">
 					<h2>Pets: </h2>
 					<ul>
-						<li>Pet 1</li>
-						<li>Pet 2</li>
+						{% for pet in pets %}
+							<li>{{ pet.name }}</li>
+						{% endfor %}
 					</ul>
 					<a href="{% url 'register_pet' %}" class="button">Add pet</a>
 				</span>
 			</article>
 
-			<article class="home-pet generic-container">
-				<h2 class="home-pet-title">Name: </h2>
-				<h2 class="home-pet-title">Kind: </h2>
-				<span class="pet-vet"></span>
-					<h2>Veterinarians: </h2>
-					<ul>
-						<li>Vet 1</li>
-						<li>Vet 2</li>
-					</ul>
-				</span>
-				<span class="pet-mil">
-					<h2>Milestones</h2>
-					<ul>
-						<li>Mil 1</li>
-						<li>Mil 2</li>
-					</ul>
-				</span>
-			</article>
-		</div>
+			{% for pet in pets %}
+				<article class="home-pet generic-container">
+					<h2 class="home-pet-title">Name: {{ pet.name }} </h2>
+					<h2 class="home-pet-title">Kind: {{ pet.kind }} </h2>
+					<span class="pet-vet"></span>
+						<h2>Veterinarians: </h2>
+						<ul>
+							<li>Vet 1</li>
+							<li>Vet 2</li>
+						</ul>
+					</span>
+					<span class="pet-mil">
+						<h2>Milestones</h2>
+						<ul>
+							<li>Mil 1</li>
+							<li>Mil 2</li>
+						</ul>
+					</span>
+				</article>
+			{% endfor %}
 	{% endif %}
 {% endblock %}
