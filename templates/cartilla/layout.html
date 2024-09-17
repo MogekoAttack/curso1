@@ -19,6 +19,7 @@
             {% if user.is_authenticated %}
                 <li class="upper">Welcome, {{ user.username }}!</li>
                 <li onclick="location.href=`{% url 'logout' %}`" class="button">Logout</li>
+                
             {% else %}
                 <li id="layout-login-btn" class="button">Login</li>
             {% endif %}        
@@ -26,11 +27,17 @@
             <li id="layout-faq-btn" class="button">FAQ</li>
         </ul>
     </header>
-        {% block body %}
+    {% block body %}
 
-        {% endblock %}
+    {% endblock %}
     <footer>
         <h3>All rigths reserverd</h3>
+        {% if user.is_authenticated %}
+        <ul>
+            <li class="button" onclick="location.href=`{% url 'veteri' %}`">Veterinarians</li>
+            <li class="button"> Messages</li>
+        </ul>
+        {% endif %}
     </footer>
 </body>
 </html>

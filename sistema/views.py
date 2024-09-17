@@ -95,3 +95,13 @@ def register_pet(request):
         return render(request, "cartilla/register_pet.html", {
 
         })
+    
+def veteri_view(request):
+    users = []
+    vet = Veterinian.objects.all()
+    for v in vet:
+        pass
+    
+    return render(request, "cartilla/veteri.html", {
+        "vet": vet,
+    })

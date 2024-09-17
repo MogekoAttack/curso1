@@ -1,0 +1,15 @@
+{% extends "cartilla/layout.html" %}
+{% load static %}
+{% block body %}
+	{% if user.is_authenticated == false %}
+		<h1>Please Login or register!</h1>
+	{% else %}
+        <div id="home-body">
+            {% for v in vet %}
+                <article class="generic-container">
+                    <h2 id="home-username">Name: {{ v. }}</h2>
+                </article>
+            {& endfor &}
+		</div>
+	{% endif %}
+{% endblock %}
