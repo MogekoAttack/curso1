@@ -90,7 +90,20 @@ strong:hover {
 	#body-layout>footer {
 		margin-top: auto;
 		border-top: 1px solid black;
+		display: flex;
 	}
+	
+	#body-layout>footer>ul{
+		display: flex;
+		align-items: center;
+		list-style: none;
+		margin-left: auto;
+	}
+
+	#body-layout>footer>ul>li{
+		margin: 0em 2em;
+	}
+
 
 	#index-container {
 		background-color: beige;
