@@ -7,9 +7,9 @@
         <div id="home-body">
             {% for v in vet %}
                 <article class="generic-container">
-                    <h2 id="home-username">Name: {{ v. }}</h2>
+                    <h2 id="home-username">Name: {{ v }}</h2>
                 </article>
-            {& endfor &}
+            {% endfor %}
 		</div>
-	{% endif %}
+        {% endif %}
 {% endblock %}
