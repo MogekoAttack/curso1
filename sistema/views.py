@@ -98,10 +98,13 @@ def register_pet(request):
     
 def veteri_view(request):
     users = []
+    all_users = User.objects.all()
     vet = Veterinian.objects.all()
     for v in vet:
-        pass
+        for user in all_users:
+            if user.pk == v.user.pk:
+                users.append(user)
     
     return render(request, "cartilla/veteri.html", {
-        "vet": vet,
+        "vet": users,
     })
