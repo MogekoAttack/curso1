@@ -27,7 +27,6 @@ body {
 
 
 .generic-container {
-	
 	border: 1px solid black;
 	border-radius: 30px;
 	margin: 2em;
@@ -57,7 +56,17 @@ strong:hover {
 	display: none;
 }
 
+#message-element {
+	display: none;
+	flex-direction: column;
+}
 
+.message-generic {
+	border: 1px solid black;
+	margin: 0.5em;
+	border-radius: 10px;
+	padding: 0.5em;
+}
 
 @media (orientation: landscape) {
 	#body-layout>header>ul {
@@ -90,6 +99,17 @@ strong:hover {
 	#body-layout>footer {
 		margin-top: auto;
 		border-top: 1px solid black;
+		display: flex;
+	}
+
+	#body-layout>footer>ul {
+		display: flex;
+		margin-left: auto;
+	}
+
+	#body-layout>footer>ul>li {
+		margin: 0em 2em;
+		list-style: none;
 	}
 
 	#index-container {
@@ -155,10 +175,37 @@ strong:hover {
 		flex-direction: column;
 		justify-content: center;
 		align-self: center;
-	  }
-	  #user-type > input {
+	}
+
+	#user-type>input {
 		width: 30em;
 		height: 4em;
 		margin: 1em;
-	  }
+	}
+
+	#messages-body {
+		display: flex;
+		min-width: 100%;
+		margin: auto;
+		height: 60vh;
+	}
+	
+	#messages-left {
+		min-width: 30%;
+	}
+	
+	#messages-center {
+		min-width: 69%;
+		display: flex;
+		justify-content: center;
+	}
+	
+	#messages-new {
+		min-width: 100%;
+		background-color: lightgrey;
+		border: none;
+		padding: 2em 0em;
+		border-radius: 10px;
+		margin-top: auto;
+	}
 }

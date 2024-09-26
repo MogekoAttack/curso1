@@ -35,7 +35,7 @@
         {% if user.is_authenticated %}
         <ul>
             <li class="button" onclick="location.href=`{% url 'veteri' %}`">Veterinarians</li>
-            <li class="button"> Messages</li>
+            <li class="button" onclick="location.href=`{% url 'messages' %}`"> Messages</li>
         </ul>
         {% endif %}
     </footer>

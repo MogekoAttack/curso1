@@ -1,3 +1,5 @@
+import json
+
 from django.db import IntegrityError
 from django.shortcuts import render, HttpResponseRedirect
 from django.http.response import JsonResponse
@@ -6,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import Veterinian
-from cartilla.models import Pet
+from cartilla.models import Pet, Messages
 
 # Create your views here.
 
@@ -97,11 +99,73 @@ def register_pet(request):
         })
     
 def veteri_view(request):
-    users = []
-    vet = Veterinian.objects.all()
-    for v in vet:
-        pass
+    all_users = User.objects.all()
+    all_vet = Veterinian.objects.all()
+    vet = []
+    for v in all_vet:
+        for u in all_users:
+            if u.pk == v.pk:
+                vet.append(u)
     
     return render(request, "cartilla/veteri.html", {
         "vet": vet,
+    })
+
+def messages_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        receiver = data.get('receiver')
+        body = data.get('messageBody')
+
+        user = User.objects.filter(username=receiver).first()
+
+        print(request.user)
+        
+        if user == None:
+            return JsonResponse({'status': 'User not exist'}, status=200)
+        
+        try:
+            new_message = Messages()
+            new_message.sender = request.user
+            new_message.receiver = user
+            new_message.body = body
+            new_message.save()
+        except:
+            return JsonResponse({'status': 'error'})
+        
+        return JsonResponse({'status': 'success'})
+    
+    messages = Messages.objects.all()
+    print( len(messages))
+    if len(messages) < 1:
+        messages = "None"
+    return render(request, 'cartilla/messages.html', {
+        "messages": messages,
+    })
+
+def get_message(request):
+    if request.method != 'GET':
+        return JsonResponse({
+            "status": "ERROR",
+            "sender": "",
+            "receiver": "",
+            "body": "",
+        })
+    
+    message_id = request.GET.get('id')
+    message = Messages.objects.filter(receiver=request.user.pk, pk=message_id).first()
+    
+    if message == None:
+        return JsonResponse({
+            "status": "ERROR",
+            "sender": "",
+            "receiver": "",
+            "body": "THIS MESSAGE NOT EXIST!",
+        })
+
+    return JsonResponse({
+        "status": "success",
+        "sender": str(message.sender),
+        "receiver": str(message.receiver),
+        "body": str(message.body),
     })

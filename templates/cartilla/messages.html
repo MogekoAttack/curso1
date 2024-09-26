@@ -1,0 +1,38 @@
+{% extends "cartilla/layout.html" %}
+{% load static %}
+{% block head %}
+    <script src="{% static 'cartilla/messages.js' %}"></script>
+{% endblock %}
+{% block body %}
+	{% if user.is_authenticated == false %}
+		<h1>Please Login or register!</h1>
+	{% else %}
+        <div id="messages-body">
+            <div id="messages-left">
+                {% if messages == 'None' %}
+                    <h1>No messages</h1>
+                {% else %}
+                    {% for message in messages %}
+                        <article class="message-generic button" onclick="ViewMessage('{{ message.pk }}')">
+                            <p class="button"><strong>Sender:</strong> {{ message.sender }}</p>
+                            <p class="button"><strong>Body:</strong> {{ message.body|truncatechars:10 }}</p>
+                        </article>
+                    {% endfor %}
+                {% endif %}
+                <button id="messages-new" onclick="NewMessage()">New message</button>
+            </div>
+            <div id="messages-center">
+                {% if messages == 'None' %}
+                {% endif %}
+                <img id="messages-icon" src="{% static 'images/mail.png' %}" alt="No img :c">
+                <form id="message-element" action="" method="post">
+                    <h1>Receiver</h1>
+                    <input type="text" name="Receiver" id="input-receiver">
+                    <h2>Message</h2>
+                    <textarea name="body" id="input-body" rows="10"></textarea>
+                    <input type="button" value="Send!" onclick="ProcessSend()">
+                </form>
+            </div>
+        </div>
+	{% endif %}
+{% endblock %}

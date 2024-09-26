@@ -51,3 +51,20 @@ class Milestone(models.Model):
         on_delete=models.CASCADE,
         related_name='milestones'
     )
+
+class Messages(models.Model):
+    receiver = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='receiver',
+    )
+
+    sender = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='sender'
+    )
+
+    body = models.TextField(
+        max_length=1024,
+    )
